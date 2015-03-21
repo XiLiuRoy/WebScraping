@@ -32,7 +32,7 @@ public class WoolisDataParsing {
 		this.categoryList = new ArrayList<String>();
 		this.woolProducts = new ArrayList<WoolProduct>();
 	}
-	
+
 	/**
 	 * Get different categories from HTML elements
 	 * @return this.categoryList
@@ -93,11 +93,11 @@ public class WoolisDataParsing {
 							pricesPerPage, allProducts, allPrices);
 				}
 			}
-			
+
 			for (WoolProduct wp : this.woolProducts) {
 				this.dbConn.insertWp(wp);
 			}
-			
+
 			//Empty the wool list, in case of duplicate insertion
 			this.woolProducts.clear();
 		}
@@ -120,11 +120,11 @@ public class WoolisDataParsing {
 			Document productHTML, Elements productsPerPage,
 			Elements pricesPerPage, ArrayList<Elements> allProducts,
 			ArrayList<Elements> allPrices) {
-		
+
 		//Add the first page to list, due to the first page is already loaded
 		allProducts.add(productsPerPage);
 		allPrices.add(pricesPerPage);
-		
+
 		//Index flag of how many pages for current category, some categories only have one page
 		int lastIndex = 0;
 		if (productHTML.getElementsByClass("page-number").size() != 0) {
@@ -145,7 +145,7 @@ public class WoolisDataParsing {
 			allProducts.add(productsPerPage);
 			allPrices.add(pricesPerPage);
 		}
-		
+
 		//Insert data to database
 		converToEntityFormat(category, allProducts, allPrices);
 	}
@@ -158,17 +158,17 @@ public class WoolisDataParsing {
 	 */
 	private void converToEntityFormat(String category, ArrayList<Elements> allProducts,
 			ArrayList<Elements> allPrices) {
-		
+
 		//Woolwoth product entity
 		WoolProduct wp;
-		
+
 		//Set fields for woolwoth entity
 		for (int i = 0; i < allProducts.size(); i++) {
 			for (int j = 0; j < allProducts.get(i).size(); j++) {
 				wp = new WoolProduct();
 				wp.setStockCode(allProducts.get(i).get(j).child(0)
 						.attr("href").replaceAll("[^0-9]", ""));
-				
+
 				//Process name, name is contained in Url
 				String desc = allProducts.get(i).get(j).child(0)
 						.attr("href");
@@ -182,14 +182,14 @@ public class WoolisDataParsing {
 			}
 		}
 	}
-	
+
 	/**
 	 * Encapsulate private methods, expose to user
 	 */
 	public void WoolisDataPickUp(){
 		extractData();
 	}
-	
+
 
 
 }

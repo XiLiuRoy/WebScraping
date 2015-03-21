@@ -23,13 +23,13 @@ import webConnection.WebConn;
  *
  */
 public class ColesDataParsing {
-	
+
 	private ArrayList<String> categoryList;
 	private ArrayList<ColesProduct> colesProducts;
 	private WebConn webConn;
 	private String baseUrl;
 	private DbConn dbConn;
-	
+
 	/**
 	 * Constructor 
 	 */
@@ -41,7 +41,7 @@ public class ColesDataParsing {
 		this.colesProducts = new ArrayList<ColesProduct>();
 		this.dbConn = new DbConn();
 	}
-	
+
 	/**
 	 * Get different categories from HTML elements
 	 * @return this.categoryList
@@ -54,32 +54,32 @@ public class ColesDataParsing {
 		}
 		return this.categoryList;
 	}
-	
+
 	/**
 	 * Main logic, extract data from website, convert HTML elements to string format
 	 * Store string format into CoelsEntity
 	 */
 	private void extractData(){
 		getCategory();
-		
+
 		//Extract product's HTML element from each catetory
 		for (String cateUrl : this.categoryList){
-			
+
 			// Store all products and prices in DOM format
 			ArrayList<Elements> allProducts = new ArrayList<Elements>();
 			ArrayList<Elements> allPrices = new ArrayList<Elements>();
-			
+
 			// Add current page's data
 			ArrayList<Document> productHTMLs = new ArrayList<Document>();
-			
+
 			//Get product HTML elements by using htmlunit
 			productHTMLs = this.webConn.getHTMLUnit(cateUrl);
-			
+
 			// Store product and price for each page
 			Elements productsPerPage;
 			Elements pricesPerPage;
 			for (Document productHTMLPerPage : productHTMLs){
-				
+
 				// Extracting data entry and price per page
 				productsPerPage = productHTMLPerPage.getElementsByAttributeValueContaining("data-catentry", "catEntry_");
 				pricesPerPage = productHTMLPerPage.getElementsByClass("purchasing");
@@ -88,11 +88,11 @@ public class ColesDataParsing {
 				allProducts.add(productsPerPage);
 				allPrices.add(pricesPerPage);
 			}
-			
+
 			// Processing extracted HTML elements to string format, save into Coles entity
 			// Insert into database
 			converToEntityFormat(allProducts, allPrices);
-			
+
 			// Empty the list
 			this.categoryList.clear();
 		}
@@ -107,7 +107,7 @@ public class ColesDataParsing {
 	private void converToEntityFormat(ArrayList<Elements> allProducts,
 			ArrayList<Elements> allPrices) {
 		ColesProduct cp;
-		
+
 		for (int i=0; i < allProducts.size();i++){
 			for (int j=0; j < allProducts.get(i).size(); j++){
 				cp = new ColesProduct();
@@ -118,10 +118,10 @@ public class ColesDataParsing {
 					cp.setName(cpJObject.getString("catEntryName"));
 					cp.setPartNumber(cpJObject.getString("partNumber"));
 					cp.setProductId(cpJObject.getString("productId"));
-					
+
 					// Some of products has special offers, like buy 2 for $3, need to extract unit price
 					if (allPrices.get(i).get(j).getElementsByClass("price").size()!=0)
-					    cp.setPrice(allPrices.get(i).get(j).getElementsByClass("price").first().text());
+						cp.setPrice(allPrices.get(i).get(j).getElementsByClass("price").first().text());
 					else
 						cp.setPrice(allPrices.get(i).get(j).getElementsByClass("std-price").first().text());
 					this.colesProducts.add(cp);
@@ -131,13 +131,13 @@ public class ColesDataParsing {
 				}
 			}
 		}
-		
+
 		// Insert Coles entity to DB
 		for (ColesProduct cpTemp : this.colesProducts){
 			this.dbConn.insertCp(cpTemp);
 		}
 	}
-	
+
 	/**
 	 * Encapsulate private methods, expose to user
 	 */

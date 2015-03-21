@@ -23,7 +23,7 @@ public class WebConn {
 
 	public WebConn() {
 	}
-	
+
 	/**
 	 * Used Jsoup for Woolis website
 	 * @param url
@@ -39,30 +39,30 @@ public class WebConn {
 		}
 		return doc;
 	}
-	
+
 	/**
 	 * Jsourp does not support ajax and javascript, have to change to use htmlUnit to pull data from Coles
 	 * @param url
 	 */
 	public ArrayList<Document> getHTMLUnit(String url){
-		
+
 		// Configuration for htmlunit, so that it support Ajax calls
 		final WebClient webClient = new WebClient(BrowserVersion.CHROME);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setRedirectEnabled(true);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
-	    webClient.getOptions().setCssEnabled(false);
-	    webClient.getOptions().setUseInsecureSSL(true);
-	    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-	    webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+		webClient.getOptions().setCssEnabled(false);
+		webClient.getOptions().setUseInsecureSSL(true);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
 
-	    
-	    ArrayList<Document> docs = new ArrayList<Document>();
-	    Document doc = null;
+
+		ArrayList<Document> docs = new ArrayList<Document>();
+		Document doc = null;
 		try {
 			HtmlPage page = webClient.getPage(url);
 			HtmlElement div;
-			
+
 			//Get products doc for all pages, currently 5 pages are used for test purpose
 			//while (page.getFirstByXPath("//a[@title='Next page of results']")!=null){
 			int i=0;
@@ -70,11 +70,11 @@ public class WebConn {
 				i++;
 				doc = Jsoup.parse(page.asXml());
 				div = page.getFirstByXPath("//a[@title='Next page of results']");
-			    page = div.click();
-			    webClient.waitForBackgroundJavaScript(10000);
+				page = div.click();
+				webClient.waitForBackgroundJavaScript(10000);
 				docs.add(doc);
 			}
-		    
+
 		} catch (FailingHttpStatusCodeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class WebConn {
 		return docs;
 
 	}
-	
-	
+
+
 
 }

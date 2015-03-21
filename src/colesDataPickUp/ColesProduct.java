@@ -23,7 +23,7 @@ public class ColesProduct {
 	public ColesProduct() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @return the productId
 	 */
@@ -93,7 +93,7 @@ public class ColesProduct {
 	public void setCatEntryId(String catEntryId) {
 		this.catEntryId = catEntryId;
 	}
-	
+
 	/**
 	 * @return the price
 	 */
@@ -107,5 +107,5 @@ public class ColesProduct {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	
+
 }
