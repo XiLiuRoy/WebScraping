@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -64,7 +63,9 @@ public class ColesDataParsing {
 
 		//Extract product's HTML element from each catetory
 		for (String cateUrl : this.categoryList){
-
+			
+			System.out.println("Extracting data from : "+cateUrl);
+			
 			// Store all products and prices in DOM format
 			ArrayList<Elements> allProducts = new ArrayList<Elements>();
 			ArrayList<Elements> allPrices = new ArrayList<Elements>();

@@ -70,6 +70,11 @@ public class WebConn {
 				i++;
 				doc = Jsoup.parse(page.asXml());
 				div = page.getFirstByXPath("//a[@title='Next page of results']");
+				
+				if (div==null){
+					break;
+				}
+
 				page = div.click();
 				webClient.waitForBackgroundJavaScript(10000);
 				docs.add(doc);
