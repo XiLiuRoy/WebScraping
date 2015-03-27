@@ -30,7 +30,8 @@ public class ColesDataParsing {
 	private DbConn dbConn;
 
 	/**
-	 * Constructor 
+	 * initialize private fields, get baseUrl from user input
+	 * @param baseUrl baseUrl for WebConn, the target web address to extract data 
 	 */
 	public ColesDataParsing(String baseUrl) {
 		// TODO Auto-generated constructor stub
@@ -102,8 +103,8 @@ public class ColesDataParsing {
 	/**
 	 * Processing extracted HTML elements to string format, save into Coles entity
 	 * Insert into database
-	 * @param allProducts
-	 * @param allPrices
+	 * @param allProducts store all page's products HTML elements
+	 * @param allPrices store all page's prices HTML elements
 	 */
 	private void converToEntityFormat(ArrayList<Elements> allProducts,
 			ArrayList<Elements> allPrices) {

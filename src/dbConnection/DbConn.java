@@ -50,8 +50,7 @@ public class DbConn {
     
     /**
      * insert Woolis data to database
-     * @param id
-     * @param value
+     * @param wp woolis entity
      */
     public void insertWp(WoolProduct wp){
     	String updateQuery = "insert into WoolWorth (Description,StockCode,Price,Url,Category) VALUES (?,?,?,?,?)";
@@ -72,8 +71,7 @@ public class DbConn {
     
     /**
      * insert Coles data to database
-     * @param id
-     * @param value
+     * @param cp Coles Entity
      */
     public void insertCp(ColesProduct cp){
     	String updateQuery = "insert into Coles (productId,itemId,partNumber,name,catEntryId,price) VALUES (?,?,?,?,?,?)";

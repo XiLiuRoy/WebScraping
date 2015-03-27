@@ -26,7 +26,7 @@ public class WebConn {
 
 	/**
 	 * Used Jsoup for Woolis website
-	 * @param url
+	 * @param url base url, the target web address to get initial HTML elements
 	 * @return doc contains HTML elements
 	 */
 	public Document getHTML(String url){
@@ -42,7 +42,8 @@ public class WebConn {
 
 	/**
 	 * Jsourp does not support ajax and javascript, have to change to use htmlUnit to pull data from Coles
-	 * @param url
+	 * @param url base url, the target web address to get initial HTML elements
+	 * @return docs ArrayList contains all page's HTML elements
 	 */
 	public ArrayList<Document> getHTMLUnit(String url){
 
